@@ -1,0 +1,145 @@
+<div class="background-header-color">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg py-3" [ngClass]="router.url == '/customer/home' ? 'gradient-header' : ''">
+            <a *ngIf="isLabelUser()" class="navbar-brand" href="javascript:void(0)" routerLink="/label">
+                <img src="assets/img/dark-dj-logo.png" class="dark-dj-logo img-fluid">
+                <img src="assets/img/light-dj-logo.png" class="light-dj-logo img-fluid">
+            </a>
+            <a *ngIf="!isLabelUser()" class="navbar-brand" href="javascript:void(0)" routerLink="/">
+                <img src="assets/img/dark-dj-logo.png" class="dark-dj-logo img-fluid">
+                <img src="assets/img/light-dj-logo.png" class="light-dj-logo img-fluid">
+            </a>
+
+            <div class="d-flex order-lg-2 align-items-center responsive-header" *ngIf="showMenus()">
+                <button (click)="theme.toggle();" class="modes-switcher">
+                    <div class="form-check form-switch mb-0">
+                        <input class="form-check-input" type="checkbox"
+                            [checked]="(theme.selectedTheme$ | async)?.is_dark">
+                    </div>
+                </button>
+
+                <div class="dropdown language-selector">
+                    <button class="btn dropdown-toggle d-flex p-0 country-flags align-items-center" type="button"
+                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="assets/img/eng-flag.png" *ngIf="selectedLocalization?.model.language==='en'">
+                        <img src="assets/img/spain.png" *ngIf="selectedLocalization?.model.language==='es'">
+                        <span class="langNameClass pt-1"> {{ selectedLocalization?.model.language }} </span>
+                        <i class="bi bi-chevron-down mx-1 mt-1"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                        <li *ngFor="let localization of localizations$ | async"
+                            (click)="setSelectedLocalization(localization)">
+                            <a class="dropdown-item" href="javascript:void(0)">
+                                <img src="assets/img/eng-flag.png" class="d-inline"
+                                    *ngIf="localization.model.language==='en'">
+                                <img src="assets/img/spain.png" class="d-inline"
+                                    *ngIf="localization.model.language==='es'">
+                                {{localization.model.name}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+                <div class="dropdown" *ngIf="user.isLoggedIn()">
+                    <button class="btn dropdown-toggle d-flex p-0 align-items-center" type="button"
+                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- <i class="bi bi-person-circle avatar-icon"></i>-->
+                        <!-- <img src="{{user.getModel().avatar}}" height="25" width="25" class="mr-1"> -->
+                        <span class="userNameClass">
+                            {{user.getModel().first_name}} </span>
+                        <i class="bi bi-chevron-down mx-1"></i>
+                    </button>
+                    <ul *ngIf="!isLabelUser()" class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="dropdownMenuButton1">
+                        <li *ngIf="user.getModel().profile_complete"><a class="dropdown-item" routerLink="/" trans> <i
+                                    class="bi bi-house-door-fill d-inline mx-1"></i>Home</a>
+                        </li>
+                        <li *ngIf="user.getModel().profile_complete"><a class="dropdown-item"
+                                routerLink="customer/account" trans>
+                                <i class="bi bi-person-fill d-inline mx-1"></i>Account</a></li>
+                        <li *ngIf="user.getModel().profile_complete"><a class="dropdown-item"
+                                routerLink="customer/web/playlist" trans> <i
+                                    class="bi bi-music-note-list d-inline mx-1"></i>Playlist</a></li>
+                        <!-- <li *ngIf="user.getModel().profile_complete"><a class="dropdown-item" routerLink="billing/upgrade" trans>
+                            <i class="bi bi-star-fill d-inline mx-1"></i>Try Pro</a></li> -->
+                        <li *ngIf="!user.getModel().profile_complete"><a class="dropdown-item"
+                                routerLink="/complete-profile" trans>
+                                <i class="bi bi-person-check d-inline mx-1"></i>Complete Profile</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0)" (click)="auth.logOut()" trans> <i
+                                    class="bi bi-box-arrow-right d-inline mx-1"></i>Logout</a>
+                        </li>
+                    </ul>
+                    <ul *ngIf="isLabelUser()" class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="javascript:void(0)" (click)="auth.logOut()" trans> <i
+                                    class="bi bi-box-arrow-right d-inline mx-1"></i>Logout</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+                <a class="btn btn-success sign-up-button" href="javascript:void(0)" routerLink="/login"
+                    *ngIf="!user.isLoggedIn()">Log in</a>
+                <!-- <a class="btn btn-outline-success  sign-up-button" href="javascript:void(0)" routerLink="/register"
+                *ngIf="!user.isLoggedIn()" [class.home_lang]="router.url === '/customer/home'">Sign Up</a> -->
+                <a href="javascript:void(0)" routerLink="/register" *ngIf="!user.isLoggedIn()">
+                    <i class="bi bi-person sign-up-icon"></i></a>
+            </div>
+
+            <button class="navbar-toggler " type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation" *ngIf="user.isLoggedIn() && user.getModel().profile_complete">
+                <span class="navbar-toggler-icon"><i class="bi bi-list"></i></span>
+            </button>
+
+            <div class="collapse navbar-collapse order-md-1 mx-2" id="navbarSupportedContent"
+                *ngIf="user.isLoggedIn() && user.getModel().profile_complete">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 " *ngIf="isLabelUser()">
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" routerLink="/label">Tracks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" routerLink="/label/account">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" routerLink="/support">Support</a>
+                    </li>
+                </ul>
+                <ul *ngIf="!isLabelUser()" class="navbar-nav me-auto mb-2 mb-lg-0 mobile-view-header">
+                    <li class="nav-item">
+                        <a class="nav-link ps-5 pe-5" href="javascript:void(0)"
+                            [ngClass]="router.url == '/customer/home' ? 'text-success' : ''" routerLink="/">Home</a>
+                    </li>
+
+                    <li class="nav-item pe-5">
+                        <a class="nav-link" href="javascript:void(0)"
+                            [ngClass]="router.url == '/customer/web/dashboard' ? 'text-success' : ''"
+                            routerLink="/customer/web/dashboard">Library</a>
+                    </li>
+
+                    <li class="nav-item pe-5">
+                        <a class="nav-link" href="javascript:void(0)"
+                            [ngClass]="router.url == '/customer/web/playlist' ? 'text-success' : ''"
+                            routerLink="/customer/web/playlist">Playlists</a>
+                    </li>
+
+                    <li class="nav-item pe-5">
+                        <a class="nav-link" href="javascript:void(0)"
+                            [ngClass]="router.url == '/customer/account' ? 'text-success' : ''"
+                            routerLink="/customer/account">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)"
+                            [ngClass]="router.url == '/support' ? 'text-success' : ''" routerLink="/support">Support</a>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+
+
+    </div>
+</div>

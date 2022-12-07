@@ -1,0 +1,67 @@
+<section *ngIf="!showTrendingList">
+    <table class="material-table" [class.mobile]="state.isMobile" cdkDropList [cdkDropListDisabled]="!reorderEnabled"
+        (cdkDropListDropped)="orderChanged.emit($event)">
+        <thead *ngIf="!state.isMobile && showHeader">
+            <tr class="customHeader">
+                <th class="number-column" *ngIf="!state.isMobile">#</th>
+                <th table-sort-header="name" trans>Title</th>
+                <th table-sort-header="artists.name" trans class="responsive-table-data">Artist</th>
+                <th table-sort-header="genres.name" trans class="responsive-table-data">Genre</th>
+                <th table-sort-header="bpm" trans class="responsive-table-data">BPM</th>
+                <th table-sort-header="key" trans class="responsive-table-data">Key</th>
+                <th table-sort-header="created_at" trans>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let track of dataSource.data$ | async; trackBy: trackByFn; let i = index"
+                [class.selected]="selectedTracks.has(track)" [attr.data-id]="track.id"
+                [class.playing]="trackIsPlaying(track)" [contextMenu]="getContextMenuParams(track)"
+                class="track-list-row" cdkDrag>
+                <td *ngIf="!state.isMobile" class="number-column">
+                    <span class="number">{{i+1}}</span>
+                    <playback-control-button class="small" [track]="track" (play)="playTrack(track, i)"
+                        (pause)="player.pause()"></playback-control-button>
+                </td>
+                <td class="name-column">{{track.name}}</td>
+                <td class="artist-column">
+                    <artists-links-list [track]="track"></artists-links-list>
+                </td>
+                <td data-label="Last Name">{{(track && track.genres && track.genres.length > 0) ?
+                    track?.genres[0]?.name:'-'}}</td>
+                <td data-label="Last Name">{{track?.bpm || '-'}}</td>
+                <td data-label="Last Name">{{track?.t_key || '-'}}</td>
+                <td data-label="Assigned At">{{track?.date | formattedDate}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <datatable-footer></datatable-footer>
+</section>
+
+<section *ngIf="showTrendingList">
+    <table class="material-table" [class.mobile]="state.isMobile" cdkDropList [cdkDropListDisabled]="!reorderEnabled"
+        (cdkDropListDropped)="orderChanged.emit($event)">
+        <tbody>
+            <tr *ngFor="let track of dataSource.data$ | async; trackBy: trackByFn; let i = index"
+                [class.selected]="selectedTracks.has(track)" [attr.data-id]="track.id"
+                [class.playing]="trackIsPlaying(track)" [contextMenu]="getContextMenuParams(track)"
+                class="track-list-row" cdkDrag>
+                <td *ngIf="!state.isMobile" class="number-column">
+                    <span class="number">{{i+1}}</span>
+                    <playback-control-button class="small" [track]="track" (play)="playTrack(track, i)"
+                        (pause)="player.pause()"></playback-control-button>
+                </td>
+                <td class="name-column">{{track.name}}
+                    <p>
+                        <artists-links-list [track]="track"></artists-links-list>
+                    </p>
+                </td>
+                <td class="options-column">
+                    <button mat-icon-button class="track-options-button" (click)="showContextMenu(track, $event)"
+                        [matTooltip]="'Show options' | trans">
+                        <mat-icon svgIcon="more-horiz"></mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>

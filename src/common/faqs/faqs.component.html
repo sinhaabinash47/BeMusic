@@ -1,0 +1,145 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="FAQ-heading my-5" trans>FAQ</h3>
+                    <ul class="nav nav-pills my-3 FAQ-tabs" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+                                aria-selected="true" trans>General</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+                                aria-selected="false" trans>Billing</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact"
+                                aria-selected="false" trans>Technical</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                            aria-labelledby="pills-home-tab">
+
+
+                            <div class="accordion FAQ-accordion" id="accordionExample">
+                                <div class="accordion-item" *ngFor="let ans of general">
+                                    <h2 class="accordion-header" [id]="'heading'+ans.id" (click)="generalSelected(ans.id)">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            [attr.data-bs-target]="'#collapse'+ans.id" aria-expanded="true"
+                                            aria-controls="collapseOne" trans>
+                                            {{ans.question}}
+                                        </button>
+                                    </h2>
+                                    <div [attr.id]="'collapse'+ans.id" class="accordion-collapse collapse" [class.show]="ans.id===gselected"
+                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <div *ngIf="ans?.answer && ans?.answer?.para?.length>0">
+                                                <ul class="list-style-type">
+                                                    <li  *ngFor="let paragraph of ans?.answer?.para" trans>{{paragraph}} <a class="pointer" *ngIf="ans?.answer?.link" (click)="paraselected(ans?.answer?.link)">Here</a> </li>
+                                                </ul>
+                                            </div>
+                                            <div *ngIf="ans?.answer && ans?.answer?.generes?.length>0">
+                                                <h2>Generes</h2>
+                                                <ul class="">
+                                                    <li class="mb-2" *ngFor="let genre of ans?.answer?.generes; let i=index;" trans><b>{{i+1}}.</b>&nbsp;&nbsp;{{genre}}</li>
+                                                </ul>
+                                            </div>
+                                            <div *ngIf="ans?.answer && ans?.answer?.subgeneres?.length>0">
+                                                <h2>Sub-generes</h2>
+                                                <ul>
+                                                    <li class="mb-2" *ngFor="let genre of ans?.answer?.subgeneres let i=index;" trans><b>{{i+1}}.</b>&nbsp;&nbsp;{{genre}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-profile" role="tabpanel"
+                            aria-labelledby="pills-profile-tab">
+                            <div class="accordion FAQ-accordion" id="accordionExample">
+                                <div class="accordion-item" *ngFor="let bils of billing">
+                                    <h2 class="accordion-header" [id]="'heading'+bils.id" (click)="generalSelected(bils.id)">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            [attr.data-bs-target]="'#collapse'+bils.id" aria-expanded="true"
+                                            aria-controls="collapseOne" trans>
+                                            {{bils.question}}
+                                        </button>
+                                    </h2>
+                                    <div [attr.id]="'collapse'+bils.id" class="accordion-collapse collapse" [class.show]="bils.id===gselected"
+                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <div *ngIf="bils?.answer && bils?.answer?.para?.length>0">
+                                                <ul class="list-style-type">
+                                                    <li *ngFor="let paragraph of bils?.answer?.para" trans>{{paragraph}} <a class="pointer" *ngIf="bils?.answer?.link" (click)="paraselected(bils?.answer?.link)" >Here</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="pills-contact" role="tabpanel"
+                            aria-labelledby="pills-contact-tab">
+
+                            <div class="accordion FAQ-accordion" id="accordionExample">
+                                <div class="accordion-item" *ngFor="let tech of technical">
+                                    <h2 class="accordion-header" [id]="'heading'+tech.id" (click)="generalSelected(tech.id)">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            [attr.data-bs-target]="'#collapse'+tech.id" aria-expanded="true"
+                                            aria-controls="collapseOne" trans>
+                                            {{tech.question}}
+                                        </button>
+                                    </h2>
+                                    <div [attr.id]="'collapse'+tech.id" class="accordion-collapse collapse" [class.show]="tech.id===gselected"
+                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <div *ngIf="tech?.answer && tech?.answer?.para?.length>0">
+                                                <ul class="list-style-type">
+                                                    <li *ngFor="let paragraph of tech?.answer?.para" trans>{{paragraph}}<a class="pointer" *ngIf="tech?.answer?.link" (click)="paraselected(tech?.answer?.link)">Here</a> </li>
+                                                </ul>
+                                            </div>
+                                            <div *ngIf="tech?.answer && tech?.answer?.enginesystem?.length>0">
+                                                <h2 class="list-style-type">We use an intuitive 4 step search engine system:</h2>
+                                                <ul>
+                                                    <li class="mb-2" *ngFor="let engine of tech?.answer?.enginesystem let i=index;" trans><b>{{i+1}}.</b>&nbsp;&nbsp;{{engine}}</li>
+                                                </ul>
+                                            </div>
+                                            <div *ngIf="tech?.answer && tech?.answer?.safari?.length>0">
+                                                <h2>In Safari</h2>
+                                                <ul>
+                                                    <li class="mb-2" *ngFor="let saf of tech?.answer?.safari let i=index;" trans><b>{{i+1}}.</b>&nbsp;&nbsp;{{saf}}</li>
+                                                </ul>
+                                            </div>
+                                            <div *ngIf="tech?.answer && tech?.answer?.chrome?.length>0">
+                                                <h2>In Chrome</h2>
+                                                <ul>
+                                                    <li class="mb-2" *ngFor="let saf of tech?.answer?.chrome let i=index;" trans><b>{{i+1}}.</b>&nbsp;&nbsp;{{saf}}</li>
+                                                </ul>
+                                            </div>
+                                            <div *ngIf="tech?.answer && tech?.answer?.firefox?.length>0">
+                                                <h2>In Firefox</h2>
+                                                <ul>
+                                                    <li class="mb-2" *ngFor="let saf of tech?.answer?.firefox let i=index;" trans><b>{{i+1}}.</b>&nbsp;&nbsp;{{saf}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

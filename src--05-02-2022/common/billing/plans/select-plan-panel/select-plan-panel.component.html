@@ -1,0 +1,66 @@
+<!-- <div class="plans" [class.has-recommended]="hasRecommendedPlan">
+    <div class="plan" *ngFor="let plan of getAllPlans(); last as last; first as first"
+        [class.recommended]="plan.recommended" [class.last]="last" [class.first]="first">
+        <div class="name">{{plan.name}}</div>
+        <div class="price-box" *ngIf="!plan.free">
+            <span class="number">{{plan.amount | currency:plan.currency}}</span>
+            <span class="interval"> / {{plan.interval | trans}}</span>
+        </div>
+        <div class="price-box" *ngIf="plan.free" trans>Free</div>
+        <plan-features-list [plan]="plan" [maximumFeaturesCount]="maximumFeaturesCount"></plan-features-list>
+        <button class="select-plan-button" (click)="selectPlan(plan)" mat-raised-button color="accent"
+            *ngIf="plan.recommended" [disabled]="userSubscribedToPlan(plan)">
+            {{ selectPlanButtonText(plan) | trans }}
+        </button>
+        <button class="select-plan-button" (click)="selectPlan(plan)" mat-stroked-button color="accent"
+            *ngIf="!plan.recommended" [disabled]="userSubscribedToPlan(plan)">
+            {{ selectPlanButtonText(plan) | trans }}
+        </button>
+    </div>
+</div> -->
+
+<div class="container compare-planes-wrapper" [class.has-recommended]="hasRecommendedPlan" trans>
+    <h1 class="text-center" trans>Compare Plans</h1>
+    <!-- <p class="text-center" trans>Affordable plans for unlimited downloads of the latest audio.</p> -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-12 col-md-12 desktop-view-table">
+            <div class="row text-center table-headings">
+                <div class="col-md-4 col-4">
+                    <h4 trans>Best value</h4>
+                </div>
+                <div class="col-md-4 col-4">
+                    <h4 trans>Most popular</h4>
+                </div>
+                <div class="col-md-4 col-4">
+                    <h4 trans>Standard</h4>
+                </div>
+            </div>
+            <div class="custom-border">
+                <div class="border-class">
+                    <div class="row text-center monthly-plans">
+                        <div class="col-md-4 p-0 py-5" [ngClass]="planIndex==1?'highlights-plans':''"
+                            *ngFor="let plan of getAllPlans(); last as last; first as first; let planIndex = index;">
+                            <h6>{{plan.name}}</h6>
+                            <p class="pb-3">{{plan.interval_count}} {{plan.interval}} access</p>
+                            <plan-features-list [plan]="plan" [maximumFeaturesCount]="maximumFeaturesCount">
+                            </plan-features-list>
+                            <div class="border-bottom-0 p-4">
+                                <p><span class="charges me-3">{{plan.currency_symbol}}
+                                    {{plan.amount.toFixed(2)}}</span><span class="month" trans>/{{plan.interval}}</span>
+                                </p>
+                                <button class="btn btn-success mb-2 mt-2 subscribe-button" (click)="selectPlan(plan)"
+                                    color="accent" *ngIf="plan.recommended" [disabled]="userSubscribedToPlan(plan)">
+                                    {{ selectPlanButtonText(plan) | trans }}
+                                </button>
+                                <button class="btn btn-success mb-2 mt-2 subscribe-button" (click)="selectPlan(plan)"
+                                    color="accent" *ngIf="!plan.recommended" [disabled]="userSubscribedToPlan(plan)">
+                                    {{ selectPlanButtonText(plan) | trans }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
